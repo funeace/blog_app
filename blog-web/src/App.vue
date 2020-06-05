@@ -5,6 +5,13 @@
     </v-container>
   </div>
 </template>
+<script>
+export default {
+  created() {
+    this.$store.dispatch('fetchBlogs')
+  },
+}
+</script>
 
 <style>
 #app {
