@@ -3,18 +3,7 @@
     <h1>Blogs</h1>
     <v-row>
       <v-col cols="4">
-      <form>
-        <v-text-field
-          v-model="blog.title"
-          label="Title"
-        ></v-text-field>
-        <v-textarea
-          v-model="blog.body"
-          label="Body"
-        ></v-textarea>
-
-        <v-btn class="mr-4" @click="onSubmit">Create</v-btn>
-      </form>
+        <AddBlog />
       </v-col>
       <v-col cols="8">
         <table>
@@ -22,12 +11,13 @@
             <th>Title</th>
             <th>Description</th>
           </tr>
-          <tr>
-            <td>aa</td>
-            <td>aa</td>
-            <td>show</td>
-            <td>Edit</td>
-            <td>Destroy</td>
+          <!-- railsのeach文 -->
+          <tr v-for="blog in blogs" :key = "blog.id">
+            <td>{{ blog.title }}</td>
+            <td>{{ blog.body }}</td>
+            <td><router-link :to="{name: 'show-blog', params: { id: blog.id }}">show</router-link></td>
+            <td><router-link :to="{name: 'edit-blog', params: { id: blog.id }}">Edit</router-link></td>
+            <td><span class="button_link" @click="deleteBlog(blog)">[Delete]</span></td>
           </tr>
         </table>
       </v-col>
@@ -36,7 +26,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import AddBlog from './AddBlog'
+
 export default {
+  components: {
+    AddBlog
+  },
+  computed: {
+    ...mapState(['blogs'])
+  },
   data() {
     return {
       blog: {}
@@ -44,7 +43,18 @@ export default {
   },
   methods: {
     onSubmit() {
+    },
+    deleteBlog(blog){
+      this.$store.dispatch('deleteBlog', blog)
     }
   }
 }
 </script> 
+
+<style scoped>
+.button_link {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+</style>

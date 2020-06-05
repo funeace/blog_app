@@ -19,6 +19,7 @@ class V1::BlogsController < ApplicationController
       render json: blog, status: :created
     else
       render json: blog.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
